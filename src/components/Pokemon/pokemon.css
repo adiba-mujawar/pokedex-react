@@ -1,0 +1,38 @@
+.pokemon--species {
+    border: 1px dashed #2E3156;
+    border-radius: 8px;
+    padding: 0 15px;
+    margin-right: 20px;
+    margin-top: 40px;
+    padding-bottom: 19px;
+}
+
+.image {
+    height: 132px;
+}
+
+.pokemon-species-name {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 23px;
+    letter-spacing: 0em;
+    color: rgba(46, 49, 86, 1);
+    padding-top: 20px;
+}
+
+.pokemon-specied-id {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 23px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .pokemon--species {
+        margin-right: 0px;
+        margin-bottom: 20px;
+        margin-top: 0px;
+    }
+}

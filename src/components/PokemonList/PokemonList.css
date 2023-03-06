@@ -1,0 +1,75 @@
+.pokemon--species--list {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 41px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.main-heading {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 35px;
+    letter-spacing: 0.06em;
+    text-align: left;
+    color: #2E3156;
+    margin: 0;
+    padding-right: 33px;
+}
+
+.link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.vertical-line {
+    border-left: 1px solid rgba(93, 95, 126, 1);
+    height: 53px;
+    padding-right: 33px;
+}
+
+.header-component {
+    padding-top: 48px;
+    display: flex;
+}
+
+.search-text {   
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 23px;
+    letter-spacing: 0em;
+    text-align: left;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    color: rgba(93, 95, 126, 1);
+}
+
+@media (max-width: 480px) {
+    .header-component {
+        padding-top: 0px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .vertical-line {
+        border-top: 1px solid rgba(93, 95, 126, 1);
+        border-left: none;
+        padding-right: 33px;
+        height: 10px;
+    }
+
+    .main-heading {
+        padding-right: 0px;
+        padding-bottom: 12px;;
+    }
+
+    .pokemon--species--list {
+        margin-top: 31px;
+    }
+
+    .search-text {   
+        font-size: 16px;
+        line-height: 18.75px;
+    }
+}

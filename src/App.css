@@ -1,0 +1,13 @@
+.App {
+    padding-left: 69px;
+    padding-right: calc(69px - 14px);
+    font-family: 'Roboto';
+}
+
+@media (max-width: 480px) {
+    .App {
+        padding-top: 61px;
+        padding-left: 28px;
+        padding-right: calc(28px);
+    }
+}
