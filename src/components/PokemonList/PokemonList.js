@@ -13,13 +13,16 @@ const PokemonList = () => {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
+  if (!data) {
+    return null;
+  }
   return (
     <div>
       <div className="header-component">
         <Link to="/" v className="link">
           <p className="main-heading">Pokédex</p>
         </Link>
-        <div class="vertical-line"></div>
+        <div className="vertical-line"></div>
         <p className="search-text">
           Search for any Pokémon that exists on the planet
         </p>

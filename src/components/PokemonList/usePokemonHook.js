@@ -10,7 +10,7 @@ function usePokemonHook() {
     const fetchData = async () => {
       try {
         let pokeList = await Api.get(
-          'http://pokeapi.co/api/v2/pokemon?limit=26'
+          'http://pokeapi.co/api/v2/pokemon?limit=50'
         );
         let allPokemonUrl = pokeList.results.map((ele) => ele.url);
         const responses = await Promise.all(
