@@ -1,61 +1,34 @@
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import Api from "../../api/api";
-import Pokemon from "../Pokemon/pokemon";
-import './PokemonList.css'
+import { Link } from 'react-router-dom';
+import Pokemon from '../Pokemon/pokemon';
+import './PokemonList.css';
+import usePokemonHook from './usePokemonHook';
 
 const PokemonList = () => {
-  const [pokemonList, setPokemonList] = useState([]);
-  const [fetched, setFetched] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const { data, error, isLoading } = usePokemonHook('https://example.com/api');
 
-  async function LoadPokemons() {
-    let pokeList = await Api.get('http://pokeapi.co/api/v2/pokemon?limit=26');
-    console.log(pokeList)
-    var all = [];
-    for (let i = 0; i < pokeList.results.length; i++) {
-      let pokeDetails = await Api.get(
-        `http://pokeapi.co/api/v2/pokemon/${pokeList.results[i].name}`
-      );
-
-      console.log(pokeDetails)
-
-      var obj = {
-        name: pokeDetails.name,
-        id: pokeDetails.id,
-        types: pokeDetails.types,
-        number: pokeDetails.id.toString().padStart(3, "0"),
-        image:
-          pokeDetails.sprites.versions["generation-v"]["black-white"]
-            .animated.front_default,
-      };
-      all.push(obj);
-    }
-
-    localStorage.setItem("pokedex_pokemons", JSON.stringify(all));
-    console.log(all)
-    setLoading(false);
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
-  useEffect(() => {
-    setLoading(false)
-    LoadPokemons()
- }, [])
-
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
   return (
     <div>
       <div className="header-component">
-        <Link to="/"v className="link">
+        <Link to="/" v className="link">
           <p className="main-heading">Pokédex</p>
         </Link>
         <div class="vertical-line"></div>
-        <p className="search-text">Search for any Pokémon that exists on the planet</p>
+        <p className="search-text">
+          Search for any Pokémon that exists on the planet
+        </p>
       </div>
-      {/* <div className="pokemon--species--list">
-        {pokemonList.map((pokemon, index) => (
-          <Pokemon key={pokemon.name} id={index + 1} pokemon={pokemon} />
+      <div className="pokemon--species--list">
+        {data.map((pokemon, index) => (
+          <Pokemon key={pokemon.name} id={pokemon.id} pokemon={pokemon} />
         ))}
-      </div> */}
+      </div>
       ;
     </div>
   );
