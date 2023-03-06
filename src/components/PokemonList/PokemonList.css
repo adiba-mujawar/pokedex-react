@@ -66,6 +66,7 @@
 
     .pokemon--species--list {
         margin-top: 31px;
+        gap: 10px;
     }
 
     .search-text {   

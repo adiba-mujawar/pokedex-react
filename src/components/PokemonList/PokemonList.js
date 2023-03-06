@@ -5,13 +5,14 @@ import Api from '../../api/api';
 import Pokemon from '../Pokemon/pokemon';
 import './PokemonList.css';
 
+
 const PokemonList = () => {
   const [page, setPage] = useState(0);
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [nextUrl, setNextUrl] = useState(
-    'http://pokeapi.co/api/v2/pokemon?offset=0&limit=50'
+    "http://pokeapi.co/api/v2/pokemon?offset=0&limit=50"
   );
 
   React.useEffect(() => {
@@ -25,9 +26,12 @@ const PokemonList = () => {
         );
         const resData = await Promise.all(responses.map((res) => res.json()));
         const alteredData = resData.map((ele) => ({
-          ...ele,
+          name: ele.name,
+          id: ele.id,
+          types: ele.types,
+          number: ele.id.toString().padStart(3, "0"),
           cardImg: ele.sprites.other.dream_world.front_default,
-        }));
+        })); 
         setData([...data, ...alteredData]);
         setIsLoading(false);
       } catch (error) {

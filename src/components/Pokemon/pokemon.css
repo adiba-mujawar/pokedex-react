@@ -7,8 +7,13 @@
     padding-bottom: 19px;
 }
 
+.pokemon--species--container {
+    padding-top: 25px;
+}
+
 .image {
-    height: 132px;
+    height: 150px;
+    width: 210px;
 }
 
 .pokemon-species-name {
@@ -29,10 +34,82 @@
     text-align: center;
 }
 
+.ReactModal__Overlay {
+    background-color: rgba(46, 49, 86, 0.9) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.react-modal {
+    background: #DEEDED;
+    width: 756px;
+    padding: 40px;
+}
+
+.pokemon--species-image {
+    border: 1px dashed #2E3156;
+    border-radius: 8px;
+    padding: 0 20px;
+    padding-bottom: 19px;
+    padding-top: 35px;
+    width: fit-content;
+}
+
+.details-image {
+    height: 100px;
+    width: 160px;
+}
+
+.pokemon-name {
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 35px;
+    letter-spacing: 0.06em;
+    text-align: left;
+    margin-left: 41px;
+    color: rgba(46, 49, 86, 1);
+}
+
 @media (max-width: 480px) {
     .pokemon--species {
         margin-right: 0px;
         margin-bottom: 20px;
         margin-top: 0px;
+    }
+
+    .image {
+        height: 100px;
+        width: 125px;
+    }
+
+    .react-modal {
+       width: 100%;
+       padding: 0 25px;
+       padding-top: 40px;
+    }
+
+    .ReactModal__Overlay {
+        position: initial;
+        align-items: unset;
+        justify-self: unset;
+    }
+
+    .vertical-line {
+        display: none;
+    }
+
+    .pokemon-name {
+        margin: 0;
+    }
+
+    .pokemon-number {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 30px;
+        line-height: 35px;
+        letter-spacing: 0.06em;
+        color: #2E3156;
+        margin: 0;
     }
 }
