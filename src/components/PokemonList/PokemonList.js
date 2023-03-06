@@ -1,61 +1,85 @@
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import Api from "../../api/api";
-import Pokemon from "../Pokemon/pokemon";
-import './PokemonList.css'
+import React, { useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { Link } from 'react-router-dom';
+import Api from '../../api/api';
+import Pokemon from '../Pokemon/pokemon';
+import './PokemonList.css';
 
 const PokemonList = () => {
-  const [pokemonList, setPokemonList] = useState([]);
-  const [fetched, setFetched] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [nextUrl, setNextUrl] = useState(
+    'http://pokeapi.co/api/v2/pokemon?offset=0&limit=50'
+  );
 
-  async function LoadPokemons() {
-    let pokeList = await Api.get('http://pokeapi.co/api/v2/pokemon?limit=26');
-    console.log(pokeList)
-    var all = [];
-    for (let i = 0; i < pokeList.results.length; i++) {
-      let pokeDetails = await Api.get(
-        `http://pokeapi.co/api/v2/pokemon/${pokeList.results[i].name}`
-      );
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let pokeList = await Api.get(nextUrl);
+        setNextUrl(pokeList.next);
+        let allPokemonUrl = pokeList.results.map((ele) => ele.url);
+        const responses = await Promise.all(
+          allPokemonUrl.map((url) => fetch(url))
+        );
+        const resData = await Promise.all(responses.map((res) => res.json()));
+        const alteredData = resData.map((ele) => ({
+          ...ele,
+          cardImg: ele.sprites.other.dream_world.front_default,
+        }));
+        setData([...data, ...alteredData]);
+        setIsLoading(false);
+      } catch (error) {
+        setError(error);
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, [page]);
 
-      console.log(pokeDetails)
-
-      var obj = {
-        name: pokeDetails.name,
-        id: pokeDetails.id,
-        types: pokeDetails.types,
-        number: pokeDetails.id.toString().padStart(3, "0"),
-        image:
-          pokeDetails.sprites.versions["generation-v"]["black-white"]
-            .animated.front_default,
-      };
-      all.push(obj);
-    }
-
-    localStorage.setItem("pokedex_pokemons", JSON.stringify(all));
-    console.log(all)
-    setLoading(false);
+  function addMorePokemon() {
+    setPage(page + 1);
   }
 
-  useEffect(() => {
-    setLoading(false)
-    LoadPokemons()
- }, [])
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+  if (!data) {
+    return null;
+  }
   return (
     <div>
       <div className="header-component">
-        <Link to="/"v className="link">
+        <Link to="/" v className="link">
           <p className="main-heading">Pokédex</p>
         </Link>
-        <div class="vertical-line"></div>
-        <p className="search-text">Search for any Pokémon that exists on the planet</p>
+        <div className="vertical-line"></div>
+        <p className="search-text">
+          Search for any Pokémon that exists on the planet
+        </p>
       </div>
-      {/* <div className="pokemon--species--list">
-        {pokemonList.map((pokemon, index) => (
-          <Pokemon key={pokemon.name} id={index + 1} pokemon={pokemon} />
-        ))}
-      </div> */}
+      <InfiniteScroll
+        dataLength={data.length}
+        next={addMorePokemon}
+        hasMore={nextUrl}
+        loader={<h4>Loading...</h4>}
+        endMessage={
+          <p style={{ textAlign: 'center' }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+      >
+        <div className="pokemon--species--list">
+          {data.map((pokemon, index) => (
+            <Pokemon key={pokemon.name} id={pokemon.id} pokemon={pokemon} />
+          ))}
+        </div>
+      </InfiniteScroll>
       ;
     </div>
   );
