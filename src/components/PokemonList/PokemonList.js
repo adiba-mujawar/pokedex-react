@@ -9,32 +9,39 @@ const PokemonList = () => {
   const [fetched, setFetched] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  async function LoadPokemons() {
+    let pokeList = await Api.get('http://pokeapi.co/api/v2/pokemon?limit=26');
+    console.log(pokeList)
+    var all = [];
+    for (let i = 0; i < pokeList.results.length; i++) {
+      let pokeDetails = await Api.get(
+        `http://pokeapi.co/api/v2/pokemon/${pokeList.results[i].name}`
+      );
+
+      console.log(pokeDetails)
+
+      var obj = {
+        name: pokeDetails.name,
+        id: pokeDetails.id,
+        types: pokeDetails.types,
+        number: pokeDetails.id.toString().padStart(3, "0"),
+        image:
+          pokeDetails.sprites.versions["generation-v"]["black-white"]
+            .animated.front_default,
+      };
+      all.push(obj);
+    }
+
+    localStorage.setItem("pokedex_pokemons", JSON.stringify(all));
+    console.log(all)
+    setLoading(false);
+  }
+
   useEffect(() => {
-     setLoading(false)
-     Api.get('http://pokeapi.co/api/v2/pokemon?limit=24').then(res => {
-      console.log(res)
-        setPokemonList(res.results)
-     })
-    //  var all = [];
-    //   for (var i = 0; i < pokeList.data.results.length; i++) {
-    //   let pokeDetails = await api.get(
-    //     `/pokemon/${pokeList.data.results[i].name}`
-    //   );
+    setLoading(false)
+    LoadPokemons()
+ }, [])
 
-    //   var obj = {
-    //     name: pokeDetails.data.name,
-    //     id: pokeDetails.data.id,
-    //     types: pokeDetails.data.types,
-    //     number: pokeDetails.data.id.toString().padStart(3, "0"),
-    //     image:
-    //       pokeDetails.data.sprites.versions["generation-v"]["black-white"]
-    //         .animated.front_default,
-    //   };
-    //   all.push(obj);
-    // }
-
-    // SavePokemons(all);
-  }, [])
   return (
     <div>
       <div className="header-component">
@@ -44,11 +51,11 @@ const PokemonList = () => {
         <div class="vertical-line"></div>
         <p className="search-text">Search for any Pokémon that exists on the planet</p>
       </div>
-      <div className="pokemon--species--list">
+      {/* <div className="pokemon--species--list">
         {pokemonList.map((pokemon, index) => (
           <Pokemon key={pokemon.name} id={index + 1} pokemon={pokemon} />
         ))}
-      </div>
+      </div> */}
       ;
     </div>
   );
