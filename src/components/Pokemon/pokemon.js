@@ -7,11 +7,7 @@ const pokemon = (props) => {
       <div className="pokemon--species--container">
         <div className="pokemon-species-sprite">
           <Link to={`/details/${pokemon.name}`}>
-            <img
-              className="image"
-              alt=""
-              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${id}.png`}
-            />
+            <img className="image" alt="" src={pokemon.cardImg} />
           </Link>
         </div>
         <div className="pokemon-species-name">
